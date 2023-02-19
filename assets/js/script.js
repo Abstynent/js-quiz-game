@@ -29,24 +29,33 @@ var fourthAnswerBtnEl = document.createElement("button");
 var answerResult = document.createElement("section"); // section to show result of the answer
 
 // Store all questions and answers, question[x][1] to be always correct answer
+var questionIndex = 0;
 const questions = [
-    ["question1", "answer1", "answer2", "answer3", "answer4"],
-    ["question2", "answer1", "answer2", "answer3", "answer4"],
-    ["question3", "answer1", "answer2", "answer3", "answer4"],
-    ["question4", "answer1", "answer2", "answer3", "answer4"],
-    ["question5", "answer1", "answer2", "answer3", "answer4"],
+    ["question1", "question2", "question3", "question4", "question5"],
+    ["answer1", "answer2", "answer3", "answer4"], // answers to question 1
+    ["answer1", "answer2", "answer3", "answer4"], // answers to question 2
+    ["answer1", "answer2", "answer3", "answer4"], // answers to question 3
+    ["answer1", "answer2", "answer3", "answer4"], // answers to question 4
+    ["answer1", "answer2", "answer3", "answer4"], // answers to question 5
 ];
 
 //
 var timer = 5;
+
 // Messages displayed after answering the questions
 var isCorrect = "Correct!";
 var isWrong = "Wrong!";
 // -------------------- END OF DECLARATIONS ----------------------------
+
+// ---------------------- SIDE FUNCTIONS -------------------------------
+
 // Remove landing page and display first question and answer buttons
 function renderPageToDisplayQuizElements() {
+
+    // Remove unused elements
     welcomeContentEl.remove();
     btnStartEl.remove();
+
     // Create list
     mainContentEl.appendChild(listEl);
 
@@ -57,26 +66,52 @@ function renderPageToDisplayQuizElements() {
     listEl.appendChild(fourthAnswerEl);
 
     // Add button to list elements
-    firstAnswerEl.appendChild(firstAnswerBtnEl).textContent = questions[0][1];
-    secondAnswerEl.appendChild(secondAnswerBtnEl).textContent = questions[0][2];
-    thirdAnswerEl.appendChild(thirdAnswerBtnEl).textContent = questions[0][3];
-    fourthAnswerEl.appendChild(fourthAnswerBtnEl).textContent = questions[0][4];
+    firstAnswerEl.appendChild(firstAnswerBtnEl); //.textContent = questions[0][1];
+    secondAnswerEl.appendChild(secondAnswerBtnEl); //.textContent = questions[0][2];
+    thirdAnswerEl.appendChild(thirdAnswerBtnEl); //.textContent = questions[0][3];
+    fourthAnswerEl.appendChild(fourthAnswerBtnEl); //.textContent = questions[0][4];
 
     mainContentEl.appendChild(answerResult); //.textContent = "Correct!";
     answerResult.setAttribute("id", "answer-result");
+
     // Not sure if I need that part
     // firstAnswerBtnEl.setAttribute("id", "btn-answer-1");
     // secondAnswerBtnEl.setAttribute("id", "btn-answer-2");
     // thirdAnswerBtnEl.setAttribute("id", "btn-answer-2");
     // fourthAnswerBtnEl.setAttribute("id", "btn-answer-4");
+};
 
+function renderToShowAnswers() {
+    tempArray = shuffleArray(questions[questionIndex + 1]);
+    firstAnswerBtnEl.textContent = tempArray[0];
+    secondAnswerBtnEl.textContent = tempArray[1];
+    thirdAnswerBtnEl.textContent = tempArray[2];
+    fourthAnswerBtnEl.textContent = tempArray[3];
+};
+
+// Randomly shuffle answer array: Fisher-Yates Shuffle
+function shuffleArray(array) {
+    let currentIndex = array.length, randomIndex;
+
+    // While there remain elements to shuffle
+    while(currentIndex != 0) {
+        // Pick remaining element.
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    };
+    return array;
 };
 
 btnStartEl.addEventListener("click", function() {
-    pageHeaderEl.textContent = questions[0][0];
     renderPageToDisplayQuizElements();
+    pageHeaderEl.textContent = questions[0][questionIndex];
+    renderToShowAnswers();
+
     var timeLeft = timer;
     timerEl.textContent = timeLeft;
+
     var timeInterval = setInterval(function() {
         timeLeft--;
         timerEl.textContent = timeLeft;
