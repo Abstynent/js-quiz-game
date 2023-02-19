@@ -8,11 +8,13 @@
 // 5. after quiz show score, textbox to save initials
 // 6. highscores page shows initials and score in the list
 
+// --------------------- DECLARATIONS -----------------------
 // Declare all DOM attributes
 var btnStartEl = document.querySelector("#btn-start");
 var pageHeaderEl = document.querySelector("#page-title");
 var welcomeContentEl = document.querySelector("#welcome-content")
 var mainContentEl = document.querySelector("#main-content");
+var timerEl = document.querySelector("#timer");
 
 // Declare and create list elements used for answers
 var listEl = document.createElement("ul");
@@ -35,6 +37,12 @@ const questions = [
     ["question5", "answer1", "answer2", "answer3", "answer4"],
 ];
 
+//
+var timer = 5;
+// Messages displayed after answering the questions
+var isCorrect = "Correct!";
+var isWrong = "Wrong!";
+// -------------------- END OF DECLARATIONS ----------------------------
 // Remove landing page and display first question and answer buttons
 function renderPageToDisplayQuizElements() {
     welcomeContentEl.remove();
@@ -67,4 +75,15 @@ function renderPageToDisplayQuizElements() {
 btnStartEl.addEventListener("click", function() {
     pageHeaderEl.textContent = questions[0][0];
     renderPageToDisplayQuizElements();
+    var timeLeft = timer;
+    timerEl.textContent = timeLeft;
+    var timeInterval = setInterval(function() {
+        timeLeft--;
+        timerEl.textContent = timeLeft;
+
+        if( timeLeft == 0) {
+            clearInterval(timeInterval);
+            //end of quiz
+        }
+    }, 1000);
 });
