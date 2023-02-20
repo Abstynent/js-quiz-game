@@ -55,6 +55,8 @@ var tempArray= [];
 var points = 0;
 var userAnswer = null;
 var timeLeft = timer;
+var highscoresPageSRC = "./assets/html/highscores.html";
+
 // -------------------- END OF DECLARATIONS ----------------------------
 
 // ---------------------- SIDE FUNCTIONS -------------------------------
@@ -196,8 +198,14 @@ function startQuiz() {
     }, 1000); // --------------------- OUTSIDE TIMER
 };
 
+// Buttons actions
 btnStartEl.addEventListener("click", startQuiz);
 firstAnswerBtnEl.addEventListener("click", function() { userAnswer = tempArray[0]; checkAnswer(userAnswer); });
 secondAnswerBtnEl.addEventListener("click", function() { userAnswer = tempArray[1]; checkAnswer(userAnswer); });
 thirdAnswerBtnEl.addEventListener("click", function () { userAnswer = tempArray[2]; checkAnswer(userAnswer); });
 fourthAnswerBtnEl.addEventListener("click", function() { userAnswer = tempArray[3]; checkAnswer(userAnswer); });
+
+saveScoreBtnEl.onclick = function () {
+    if(saveScoreInputEl.value.length == 0) alert("Enter your initials.");
+    // else location.href = highscoresPageSRC;
+}
