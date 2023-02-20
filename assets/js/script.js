@@ -125,6 +125,7 @@ function checkAnswer(answer) {
         return false;
     };
 };
+
 // Add points and go to another question
 function goToNextQuestion() {
     userAnswer = null;
