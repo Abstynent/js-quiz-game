@@ -22,7 +22,6 @@ ul {
     width: 100%;
     flex-direction: column;
     list-style-type: none;
-    line-height: 2rem;
 }
 
 ol {
@@ -54,10 +53,6 @@ a:hover {
     padding: 0 5% 0;
     flex-direction: column;
     align-items: center;
-}
-
-#page-title {
-    padding-bottom: 3%;
 }
 
 #answer-result {
@@ -93,7 +88,7 @@ button {
     font-family: Roboto,sans-serif;
     font-size: .875rem;
     font-weight: 500;
-    height: 36px;
+    min-height: 36px;
     justify-content: center;
     letter-spacing: .0892857em;
     line-height: normal;
