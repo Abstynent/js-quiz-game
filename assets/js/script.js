@@ -1,13 +1,3 @@
-// 1. landing page with nav bar, left side link to high scores, right side timer
-// 2. maybe some picture in the middle, under button to start the quiz
-// 3. questions are displayed and 4 buttons with answers
-// 4. check submitted answer
-// 4.1 if answered correctly add point, next question
-// 4.2 if answered wrong substract 10 sec from timer, go to another question
-// 4.3 after each answer show if was correct or wrong 
-// 5. after quiz show score, textbox to save initials
-// 6. highscores page shows initials and score in the list
-
 // --------------------- DECLARATIONS -----------------------
 // Declare all DOM attributes
 var btnStartEl = document.querySelector("#btn-start");
@@ -37,6 +27,7 @@ var saveScoreBtnEl = document.createElement("button");
 saveScoreEl.setAttribute("id","save-score-content")
 saveScoreBtnEl.setAttribute("style","height: 18px")
 answerResultEl.setAttribute("id", "answer-result");
+
 // Questions stored in first array
 // First answer from array always correct one
 var questions = [
@@ -48,7 +39,7 @@ var questions = [
     ["answer1", "answer2", "answer3", "answer4"], // answers to question 5
 ];
 
-//
+// var
 var timer = 75;
 var questionIndex = 0;
 var tempArray= [];
@@ -56,9 +47,6 @@ var points = 0;
 var userAnswer = null;
 var timeLeft = timer;
 var highscoresPageSRC = "./assets/html/highscores.html";
-
-// -------------------- END OF DECLARATIONS ----------------------------
-
 // ---------------------- SIDE FUNCTIONS -------------------------------
 
 // Remove landing page and display first question and answer buttons
@@ -84,12 +72,6 @@ function renderPageToDisplayQuizElements() {
     fourthAnswerEl.appendChild(fourthAnswerBtnEl);
 
     mainContentEl.appendChild(answerResultEl);
-
-    // Not sure if I need that part
-    // firstAnswerBtnEl.setAttribute("id", "btn-answer-1");
-    // secondAnswerBtnEl.setAttribute("id", "btn-answer-2");
-    // thirdAnswerBtnEl.setAttribute("id", "btn-answer-2");
-    // fourthAnswerBtnEl.setAttribute("id", "btn-answer-4");
 };
 
 // Randomly display answers on the page
@@ -127,7 +109,6 @@ function renderToShowResult(bln) {
 
 // Check if answer is correct or not
 function checkAnswer(answer) {
-    console.log(answer);
     if(answer == questions[questionIndex + 1][0]) {
         renderToShowResult(true);
         goToNextQuestion();
@@ -139,7 +120,7 @@ function checkAnswer(answer) {
         return false;
     };
 };
-
+// Add points and go to another question
 function goToNextQuestion() {
     userAnswer = null;
     points += 5;
@@ -151,6 +132,7 @@ function goToNextQuestion() {
     };
 };
 
+// remove elements to display result page
 function endOfQuiz() {
     listEl.remove();
     answerResultEl.remove();
@@ -158,7 +140,7 @@ function endOfQuiz() {
     mainContentEl.appendChild(resultPageEl).setAttribute("id", "result-content");
     resultPageEl.textContent = "Score: " + points;
     mainContentEl.appendChild(saveScoreEl).textContent = "Enter initials: ";
-    saveScoreEl.appendChild(saveScoreInputEl);
+    saveScoreEl.appendChild(saveScoreInputEl).setAttribute("id","input-initials");
     saveScoreEl.appendChild(saveScoreBtnEl).textContent = "Submit";
 };
 
@@ -173,27 +155,10 @@ function startQuiz() {
         timeLeft--;
         timerEl.textContent = timeLeft;
 
-        // Listen buttons to save user answer
-        // firstAnswerBtnEl.addEventListener("click", function() { userAnswer = tempArray[0] });
-        // secondAnswerBtnEl.addEventListener("click", function() { userAnswer = tempArray[1] });
-        // thirdAnswerBtnEl.addEventListener("click", function () { userAnswer = tempArray[2] });
-        // fourthAnswerBtnEl.addEventListener("click", function() { userAnswer = tempArray[3] });
-
-        // if(userAnswer !== null) {
-        //     // if(checkAnswer(userAnswer)) {
-
-        //     //     };
-        //     } else {
-        //         userAnswer = null;
-        //         timeLeft -= 10;
-        //         timerEl.textContent = timeLeft;
-        //     };
-        // };
-
         if(timeLeft < 1) {
             clearInterval(timeInterval);
             timerEl.textContent = "";
-            //end of quiz
+            endOfQuiz();
         };
     }, 1000); // --------------------- OUTSIDE TIMER
 };
@@ -207,5 +172,18 @@ fourthAnswerBtnEl.addEventListener("click", function() { userAnswer = tempArray[
 
 saveScoreBtnEl.onclick = function () {
     if(saveScoreInputEl.value.length == 0) alert("Enter your initials.");
-    // else location.href = highscoresPageSRC;
-}
+    else {
+        var storedScores = JSON.parse(localStorage.getItem("highscores"));
+
+        if(storedScores == null) {
+            var currentScore = [[saveScoreInputEl.value, points]];
+            storedScores = currentScore;
+        } else {
+            var currentScore = [saveScoreInputEl.value, points];
+            storedScores.push(currentScore);
+        };
+
+        localStorage.setItem("highscores", JSON.stringify(storedScores));
+        location.href = highscoresPageSRC;
+    };
+};

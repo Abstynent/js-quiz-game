@@ -25,6 +25,24 @@ ul {
     line-height: 2rem;
 }
 
+ol {
+    width: 100%;
+    line-height: 1.5rem;
+    align-items: baseline;
+}
+
+a,
+a:after,
+a:before,
+a:focus {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    color:rgba(0, 0, 0, .12)
+}
+
 
 #timer-box {
     padding-right: 1.5rem;
@@ -32,7 +50,6 @@ ul {
 
 #main-content {
     display: flex;
-    background-color: lightgray;
     margin: 0 25%;
     padding: 0 5% 0;
     flex-direction: column;
@@ -58,11 +75,9 @@ ul {
     width: 100%;
 }
 
-/* #results-btn {
-    display: flex;
-    width: 100%;
-    justify-content: space-evenly;
-} */
+#highscores-btn-content {
+    display: inherit;
+}
 
 /* Button styling copied from https://getcssscan.com/css-buttons-examples */
 button {
