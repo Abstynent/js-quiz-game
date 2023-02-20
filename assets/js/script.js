@@ -26,8 +26,17 @@ var firstAnswerBtnEl = document.createElement("button");
 var secondAnswerBtnEl = document.createElement("button");
 var thirdAnswerBtnEl = document.createElement("button");
 var fourthAnswerBtnEl = document.createElement("button");
-var answerResult = document.createElement("section"); // section to show result of the answer
+var answerResultEl = document.createElement("section"); // section to show result of the answer
+var resultPageEl = document.createElement("section");
+var resultPageLinksEl = document.createElement("section");
+var saveScoreEl = document.createElement("div");
+var saveScoreInputEl = document.createElement("input");
+var saveScoreBtnEl = document.createElement("button");
 
+// Set attributes
+saveScoreEl.setAttribute("id","save-score-content")
+saveScoreBtnEl.setAttribute("style","height: 18px")
+answerResultEl.setAttribute("id", "answer-result");
 // Questions stored in first array
 // First answer from array always correct one
 var questions = [
@@ -44,7 +53,8 @@ var timer = 75;
 var questionIndex = 0;
 var tempArray= [];
 var points = 0;
-
+var userAnswer = null;
+var timeLeft = timer;
 // -------------------- END OF DECLARATIONS ----------------------------
 
 // ---------------------- SIDE FUNCTIONS -------------------------------
@@ -71,8 +81,7 @@ function renderPageToDisplayQuizElements() {
     thirdAnswerEl.appendChild(thirdAnswerBtnEl);
     fourthAnswerEl.appendChild(fourthAnswerBtnEl);
 
-    mainContentEl.appendChild(answerResult);
-    answerResult.setAttribute("id", "answer-result");
+    mainContentEl.appendChild(answerResultEl);
 
     // Not sure if I need that part
     // firstAnswerBtnEl.setAttribute("id", "btn-answer-1");
@@ -110,8 +119,8 @@ function renderToShowResult(bln) {
     var isCorrect = "Correct!";
     var isWrong = "Wrong!";
 
-    if(bln) answerResult.textContent = isCorrect;
-    else answerResult.textContent = isWrong;
+    if(bln) answerResultEl.textContent = isCorrect;
+    else answerResultEl.textContent = isWrong;
 };
 
 // Check if answer is correct or not
@@ -119,50 +128,76 @@ function checkAnswer(answer) {
     console.log(answer);
     if(answer == questions[questionIndex + 1][0]) {
         renderToShowResult(true);
+        goToNextQuestion();
         return true;
     } else {
         renderToShowResult(false);
+        timeLeft -= 10;
+        points -= 3;
         return false;
     };
+};
+
+function goToNextQuestion() {
+    userAnswer = null;
+    points += 5;
+    questionIndex++;
+    if(questionIndex < questions.length) renderToShowAnswers();
+    if(questionIndex === questions.length - 1) {
+        timeLeft = 0;
+        endOfQuiz();
+    };
+};
+
+function endOfQuiz() {
+    listEl.remove();
+    answerResultEl.remove();
+    pageHeaderEl.textContent = "All done!";
+    mainContentEl.appendChild(resultPageEl).setAttribute("id", "result-content");
+    resultPageEl.textContent = "Score: " + points;
+    mainContentEl.appendChild(saveScoreEl).textContent = "Enter initials: ";
+    saveScoreEl.appendChild(saveScoreInputEl);
+    saveScoreEl.appendChild(saveScoreBtnEl).textContent = "Submit";
 };
 
 // --------------------------- MAIN GAME -------------------------------
 function startQuiz() {
     renderPageToDisplayQuizElements();
-    if(questionIndex < questions.length) renderToShowAnswers();
-    console.log("len: " + questions.length);
-    var userAnswer = null;
-    var timeLeft = timer;
+    renderToShowAnswers();
+
     timerEl.textContent = timeLeft;
 
-    var timeInterval = setInterval(function() {
+    var timeInterval = setInterval(function() { // ---------- INSIDE TIMER
         timeLeft--;
         timerEl.textContent = timeLeft;
-        console.log(timeLeft);
 
-        // Listen buttons, if clicked check if the answer is correct
-        firstAnswerBtnEl.addEventListener("click", function() { userAnswer = tempArray[0] });
-        secondAnswerBtnEl.addEventListener("click", function() { userAnswer = tempArray[1] });
-        thirdAnswerBtnEl.addEventListener("click", function () { userAnswer = tempArray[2] });
-        fourthAnswerBtnEl.addEventListener("click", function() { userAnswer = tempArray[3] });
+        // Listen buttons to save user answer
+        // firstAnswerBtnEl.addEventListener("click", function() { userAnswer = tempArray[0] });
+        // secondAnswerBtnEl.addEventListener("click", function() { userAnswer = tempArray[1] });
+        // thirdAnswerBtnEl.addEventListener("click", function () { userAnswer = tempArray[2] });
+        // fourthAnswerBtnEl.addEventListener("click", function() { userAnswer = tempArray[3] });
 
-        if(userAnswer !== null) {
-            if(checkAnswer(userAnswer)) {
-                userAnswer = null;
-                points += 5;
-                questionIndex++;
-            } else {
-                timeLeft -= 10;
-                timerEl.textContent = timeLeft;
-                userAnswer = null;
-            };
-        };
+        // if(userAnswer !== null) {
+        //     // if(checkAnswer(userAnswer)) {
 
-        if( timeLeft == 0) {
+        //     //     };
+        //     } else {
+        //         userAnswer = null;
+        //         timeLeft -= 10;
+        //         timerEl.textContent = timeLeft;
+        //     };
+        // };
+
+        if(timeLeft < 1) {
             clearInterval(timeInterval);
+            timerEl.textContent = "";
             //end of quiz
-        }
-    }, 1000);
+        };
+    }, 1000); // --------------------- OUTSIDE TIMER
 };
 
 btnStartEl.addEventListener("click", startQuiz);
+firstAnswerBtnEl.addEventListener("click", function() { userAnswer = tempArray[0]; checkAnswer(userAnswer); });
+secondAnswerBtnEl.addEventListener("click", function() { userAnswer = tempArray[1]; checkAnswer(userAnswer); });
+thirdAnswerBtnEl.addEventListener("click", function () { userAnswer = tempArray[2]; checkAnswer(userAnswer); });
+fourthAnswerBtnEl.addEventListener("click", function() { userAnswer = tempArray[3]; checkAnswer(userAnswer); });
