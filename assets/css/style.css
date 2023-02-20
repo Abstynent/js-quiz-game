@@ -104,7 +104,6 @@ button {
     position: relative;
     text-align: center;
     text-decoration: none;
-    text-transform: uppercase;
     transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1);
     user-select: none;
     -webkit-user-select: none;

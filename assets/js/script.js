@@ -31,12 +31,17 @@ answerResultEl.setAttribute("id", "answer-result");
 // Questions stored in first array
 // First answer from array always correct one
 var questions = [
-    ["question1", "question2", "question3", "question4", "question5"],
-    ["answer1", "answer2", "answer3", "answer4"], // answers to question 1
-    ["answer1", "answer2", "answer3", "answer4"], // answers to question 2
-    ["answer1", "answer2", "answer3", "answer4"], // answers to question 3
-    ["answer1", "answer2", "answer3", "answer4"], // answers to question 4
-    ["answer1", "answer2", "answer3", "answer4"], // answers to question 5
+    ["Inside which HTML element do we put the JavaScript?",
+     "Where is the correct place to insert a JavaScript?",
+     "How do you write 'Hello World' in an alert box?",
+     "How do you create a function in JavaScript?",
+     "How can you add a comment in a JavaScript?"],
+
+    ["<script>", "<javascript>", "<js>", "<scripting>"], // answers to question 1
+    ["The <body> section", "The <head> section", "The <footer> section", "Top of .html file"], // answers to question 2
+    ["alert('Hello World');", "msgBox('Hello World');", "msg('Hello World');", "alertBox('Hello World');"], // answers to question 3
+    ["function myFunction()", "var myFunction()", "function = myFunction()", "function: myFunction()"], // answers to question 4
+    ["// This is a comment", "<!-- This is a comment -->", "# This is a comment #", "'This is a comment'"], // answers to question 5
 ];
 
 // var

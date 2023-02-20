@@ -15,7 +15,7 @@ clearScoresBtn.onclick = function () {
 };
 
 function renderHighscores() {
-    listHighscoresEl.innerHTML = "";
+    listHighscoresEl.innerHTML = "No saved scores.";
     if(storedScores === null) return;
     else storedScores = storedScores.sort((a, b) => b[1] - a[1]);
 
